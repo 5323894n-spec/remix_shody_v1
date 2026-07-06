@@ -1,0 +1,6 @@
+{
+  "name": "Учёт сходов с линии",
+  "description": "Программа учёта сходов с линии пассажирского транспорта для анализа поломок, ведения журналов и контроля качества данных.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

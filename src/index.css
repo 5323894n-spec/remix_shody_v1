@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Cosmic Dark Theme Overrides */
+.theme-cosmic {
+  --color-white: #151f32; /* Rich dark-blue card background */
+  --color-slate-50: #0b0f19; /* Cosmic midnight blue page background */
+  --color-slate-100: #1a2436; /* Section header or active item background */
+  --color-slate-200: #1e293b; /* Deep slate borders */
+  --color-slate-300: #334155; /* Medium borders / divider lines */
+  --color-slate-400: #64748b; /* Soft blue-grey helper text */
+  --color-slate-500: #94a3b8; /* Muted text */
+  --color-slate-600: #cbd5e1; /* Secondary labels */
+  --color-slate-700: #e2e8f0; /* Secondary headings */
+  --color-slate-800: #f8fafc; /* Clear headers / light texts */
+  --color-slate-900: #ffffff; /* Brilliant white main text */
+  
+  --color-blue-50: #1e293b; /* Accent badge background */
+  --color-blue-100: #3b82f6; /* Accent borders */
+  --color-blue-600: #3b82f6; /* Neon indigo actions */
+  --color-blue-700: #60a5fa; /* Hover action */
+  
+  color-scheme: dark;
+}
+
+/* Cyber Emerald Dark Theme Overrides */
+.theme-cyber {
+  --color-white: #111518; /* Rich carbon black card background */
+  --color-slate-50: #08090b; /* Deep high-tech black page background */
+  --color-slate-100: #181f24; /* Subcontainer background */
+  --color-slate-200: #1e252c; /* Tactile technical borders */
+  --color-slate-300: #2b343e; /* Mid-tone border lines */
+  --color-slate-400: #647a8c; /* Muted cyan-grey text */
+  --color-slate-500: #8ba2b5; /* Cyber muted labels */
+  --color-slate-600: #ccdce8; /* Secondary tags and text */
+  --color-slate-700: #ecfdf5; /* Light emerald accent details */
+  --color-slate-800: #f0fdf4; /* Off-white bright headers */
+  --color-slate-900: #ffffff; /* pure white text */
+  
+  --color-blue-50: #064e3b; /* Deep pine badge background */
+  --color-blue-100: #34d399; /* Mint borders */
+  --color-blue-600: #10b981; /* High-intensity neon green buttons */
+  --color-blue-700: #059669; /* Emerald hover action */
+  
+  color-scheme: dark;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
