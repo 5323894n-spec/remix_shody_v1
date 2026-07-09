@@ -18,7 +18,7 @@ import Login from './components/Login';
 // Icons
 import { 
   LayoutDashboard, ClipboardList, PlusCircle, UploadCloud, 
-  Wrench, BookOpen, ShieldCheck, ShieldAlert, CheckCircle, RefreshCcw, LogOut 
+  Wrench, BookOpen, ShieldCheck, ShieldAlert, CheckCircle, RefreshCcw, LogOut, Bus 
 } from 'lucide-react';
 
 const DEFAULT_SYSTEM_USERS: User[] = [
@@ -228,205 +228,76 @@ export default function App() {
   return (
     <div className={`theme-${theme} min-h-screen bg-slate-50 flex flex-col md:flex-row font-sans text-slate-900 leading-normal transition-colors duration-300`}>
       {/* Dynamic left sidebar */}
-      <aside className="w-full md:w-64 bg-slate-900 text-slate-300 flex flex-col justify-between shrink-0 border-r border-slate-800 shadow-xl z-20">
-        <div className="flex flex-col">
+      <aside className="w-full md:w-72 bg-[#0f172a] text-slate-300 flex flex-col justify-between shrink-0 shadow-2xl z-20">
+        <div className="flex flex-col h-full">
           {/* Logo / Header banner */}
-          <div className="p-6 border-b border-slate-800 flex items-center gap-2.5 bg-slate-950/60">
-            <span className="text-3xl">🚌</span>
+          <div className="p-6 flex items-center gap-3">
+            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20 text-white shrink-0">
+              <Bus className="w-5 h-5" />
+            </div>
             <div>
-              <h1 className="text-lg font-black tracking-wider text-white">СХОДЫ-СЕРВИС</h1>
-              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">Линейный мониторинг</p>
+              <h1 className="text-lg font-bold tracking-wide text-white leading-tight">Сходы-Сервис</h1>
+              <p className="text-[11px] text-slate-400 font-medium uppercase tracking-wider mt-0.5">Линейный мониторинг</p>
             </div>
           </div>
 
           {/* Navigation Links */}
-          <nav className="p-4 space-y-1.5 flex-1">
-            <button
-              onClick={() => setActiveTab('dashboard')}
-              className={`w-full text-left px-4 py-3 rounded-lg text-sm font-semibold flex items-center gap-3 transition-all cursor-pointer ${
-                activeTab === 'dashboard' ? 'bg-blue-600 text-white shadow-md font-bold' : 'hover:bg-slate-800 text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <LayoutDashboard className="w-4.5 h-4.5 shrink-0" />
-              <span>Аналитический дашборд</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('journal')}
-              className={`w-full text-left px-4 py-3 rounded-lg text-sm font-semibold flex items-center gap-3 transition-all cursor-pointer ${
-                activeTab === 'journal' ? 'bg-blue-600 text-white shadow-md font-bold' : 'hover:bg-slate-800 text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <ClipboardList className="w-4.5 h-4.5 shrink-0" />
-              <span>Журнал сходов с линии</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('add')}
-              className={`w-full text-left px-4 py-3 rounded-lg text-sm font-semibold flex items-center gap-3 transition-all cursor-pointer ${
-                activeTab === 'add' ? 'bg-blue-600 text-white shadow-md font-bold' : 'hover:bg-slate-800 text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <PlusCircle className="w-4.5 h-4.5 shrink-0" />
-              <span>Ввести сход вручную</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('upload')}
-              className={`w-full text-left px-4 py-3 rounded-lg text-sm font-semibold flex items-center gap-3 transition-all cursor-pointer ${
-                activeTab === 'upload' ? 'bg-blue-600 text-white shadow-md font-bold' : 'hover:bg-slate-800 text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <UploadCloud className="w-4.5 h-4.5 shrink-0" />
-              <span>Импорт диспетчерских</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('catalog')}
-              className={`w-full text-left px-4 py-3 rounded-lg text-sm font-semibold flex items-center gap-3 transition-all cursor-pointer ${
-                activeTab === 'catalog' ? 'bg-blue-600 text-white shadow-md font-bold' : 'hover:bg-slate-800 text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <Wrench className="w-4.5 h-4.5 shrink-0" />
-              <span>Справочник поломок</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('references')}
-              className={`w-full text-left px-4 py-3 rounded-lg text-sm font-semibold flex items-center gap-3 transition-all cursor-pointer ${
-                activeTab === 'references' ? 'bg-blue-600 text-white shadow-md font-bold' : 'hover:bg-slate-800 text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <BookOpen className="w-4.5 h-4.5 shrink-0" />
-              <span>Служебные словари</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('quality')}
-              className={`w-full text-left px-4 py-3 rounded-lg text-sm font-semibold flex items-center gap-3 transition-all cursor-pointer ${
-                activeTab === 'quality' ? 'bg-blue-600 text-white shadow-md font-bold' : 'hover:bg-slate-800 text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <ShieldCheck className="w-4.5 h-4.5 shrink-0" />
-              <span>Аудит качества данных</span>
-            </button>
-
-            {/* Тема и Текущий пользователь сверху под аудитом качества */}
-            <div className="pt-3 mt-3 border-t border-slate-800/60 space-y-3">
-              <div className="space-y-1">
-                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block">Тема оформления:</label>
-                <div className="grid grid-cols-3 gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800/80">
-                  <button
-                    onClick={() => {
-                      setTheme('light');
-                      localStorage.setItem('shody_theme', 'light');
-                    }}
-                    className={`text-[9px] py-1.5 rounded font-black uppercase text-center transition-all cursor-pointer ${
-                      theme === 'light' 
-                        ? 'bg-blue-600 text-white shadow font-bold' 
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-                    }`}
-                    title="Светлая классика"
-                  >
-                    ☀️ Свет
-                  </button>
-                  <button
-                    onClick={() => {
-                      setTheme('cosmic');
-                      localStorage.setItem('shody_theme', 'cosmic');
-                    }}
-                    className={`text-[9px] py-1.5 rounded font-black uppercase text-center transition-all cursor-pointer ${
-                      theme === 'cosmic' 
-                        ? 'bg-indigo-600 text-white shadow font-bold' 
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-                    }`}
-                    title="Космическая синева"
-                  >
-                    🌌 Синь
-                  </button>
-                  <button
-                    onClick={() => {
-                      setTheme('cyber');
-                      localStorage.setItem('shody_theme', 'cyber');
-                    }}
-                    className={`text-[9px] py-1.5 rounded font-black uppercase text-center transition-all cursor-pointer ${
-                      theme === 'cyber' 
-                        ? 'bg-emerald-600 text-white shadow font-bold' 
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-                    }`}
-                    title="Кибер-изумруд"
-                  >
-                    📟 Кибер
-                  </button>
-                </div>
-              </div>
-
-              <div className={`space-y-2 p-3 rounded-lg border transition-all duration-300 ${
-                currentUser.role === 'admin' 
-                  ? 'bg-amber-950/20 border-amber-500/30 shadow-sm shadow-amber-500/5' 
-                  : currentUser.role === 'dispatcher'
-                    ? 'bg-blue-950/20 border-blue-500/30 shadow-sm shadow-blue-500/5'
-                    : 'bg-emerald-950/10 border-emerald-500/20 shadow-sm shadow-emerald-500/5'
-              }`}>
-                <div className="space-y-1">
-                  <label className={`text-[9px] font-extrabold uppercase tracking-widest block transition-colors duration-300 ${
-                    currentUser.role === 'admin' 
-                      ? 'text-amber-500' 
-                      : currentUser.role === 'dispatcher'
-                        ? 'text-blue-400'
-                        : 'text-emerald-400'
-                  }`}>Авторизован как:</label>
-                  <div className="text-xs font-bold text-white leading-tight">
-                    {currentUser.name}
-                  </div>
-                  <div className="flex items-center gap-1.5 mt-1">
-                    <span className={`text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full ${
-                      currentUser.role === 'admin'
-                        ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                        : currentUser.role === 'dispatcher'
-                          ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
-                          : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                    }`}>
-                      {currentUser.role === 'admin'
-                        ? 'Администратор'
-                        : currentUser.role === 'dispatcher'
-                          ? 'Диспетчер'
-                          : currentUser.role === 'manager'
-                            ? 'Нач. Колонны / Руководитель'
-                            : 'Просмотр'}
-                    </span>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="w-full mt-2 text-center py-1.5 bg-slate-950 hover:bg-red-950/40 hover:text-red-400 hover:border-red-500/30 text-slate-400 border border-slate-800 rounded text-[10px] font-extrabold uppercase tracking-widest transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer"
-                >
-                  <LogOut className="w-3 h-3" />
-                  <span>Выйти из системы</span>
-                </button>
-              </div>
-            </div>
+          <nav className="px-4 py-2 space-y-1.5 flex-1 overflow-y-auto">
+            {[
+              { id: 'dashboard', icon: LayoutDashboard, label: 'Аналитический дашборд' },
+              { id: 'journal', icon: ClipboardList, label: 'Журнал сходов с линии' },
+              { id: 'add', icon: PlusCircle, label: 'Ввести сход вручную' },
+              { id: 'upload', icon: UploadCloud, label: 'Импорт диспетчерских' },
+              { id: 'catalog', icon: Wrench, label: 'Справочник поломок' },
+              { id: 'references', icon: BookOpen, label: 'Служебные словари' },
+              { id: 'quality', icon: ShieldCheck, label: 'Аудит качества данных' },
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-3 transition-all cursor-pointer ${
+                  activeTab === item.id 
+                  ? 'bg-blue-500/10 text-blue-400' 
+                  : 'hover:bg-slate-800/50 text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <item.icon className={`w-5 h-5 shrink-0 ${activeTab === item.id ? 'text-blue-500' : 'text-slate-500'}`} />
+                <span>{item.label}</span>
+              </button>
+            ))}
           </nav>
-        </div>
 
-        {/* User profile switcher footer */}
-        <div className="p-4 border-t border-slate-800 bg-slate-950/40">
-          <div className="flex items-center justify-between text-[11px] text-slate-500 font-semibold">
-            <span className="flex items-center gap-1">
-              <ShieldAlert className="w-3 h-3 text-blue-500" />
-              <span>Роль: {currentUser.role.toUpperCase()}</span>
-            </span>
-
-            <button
-              onClick={handleResetToFactorySettings}
-              className="text-red-400 hover:text-red-300 transition-colors flex items-center gap-0.5"
-              title="Сбросить все данные до заводских"
-            >
-              <RefreshCcw className="w-3 h-3" />
-              <span>Сброс</span>
-            </button>
+          {/* User profile footer */}
+          <div className="p-4 mt-auto">
+            <div className="bg-slate-800/40 rounded-2xl p-4 border border-slate-700/50">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-9 h-9 rounded-full bg-slate-700 flex items-center justify-center text-slate-300 font-bold text-sm shrink-0">
+                  {currentUser.name.charAt(0)}
+                </div>
+                <div className="overflow-hidden">
+                  <div className="text-sm font-semibold text-white truncate">{currentUser.name.split(' (')[0]}</div>
+                  <div className="text-[11px] text-slate-400 font-medium">{currentUser.role === 'admin' ? 'Администратор' : currentUser.role === 'dispatcher' ? 'Диспетчер' : 'Руководитель'}</div>
+                </div>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                Выйти из системы
+              </button>
+            </div>
+            <div className="mt-4 flex justify-between items-center px-1">
+              <span className="text-[10px] text-slate-500 font-medium">v1.2.0</span>
+              <button
+                onClick={handleResetToFactorySettings}
+                className="text-[10px] text-slate-500 hover:text-slate-300 transition-colors flex items-center gap-1"
+                title="Сбросить все данные до заводских"
+              >
+                <RefreshCcw className="w-3 h-3" />
+                Сброс
+              </button>
+            </div>
           </div>
         </div>
       </aside>
@@ -499,6 +370,7 @@ export default function App() {
             breakdowns={breakdowns}
             drivers={drivers}
             vehicles={vehicles}
+            incidents={incidents}
             currentUser={currentUser}
             onAddIncident={handleAddIncident}
           />

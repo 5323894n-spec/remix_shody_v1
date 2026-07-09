@@ -133,35 +133,12 @@ export const INITIAL_BREAKDOWNS: Breakdown[] = [
   }
 ];
 
-export const INITIAL_DRIVERS: Driver[] = [
-  { id: 1, tab_number: '1021', name: 'Смирнов Александр Викторович' },
-  { id: 2, tab_number: '1022', name: 'Кузнецов Дмитрий Сергеевич' },
-  { id: 3, tab_number: '1023', name: 'Васильев Сергей Петрович' },
-  { id: 4, tab_number: '1024', name: 'Попов Андрей Николаевич' },
-  { id: 5, tab_number: '1025', name: 'Соколов Михаил Юрьевич' },
-  { id: 6, tab_number: '1026', name: 'Лебедев Алексей Дмитриевич' },
-  { id: 7, tab_number: '1027', name: 'Козлов Илья Владимирович' },
-  { id: 8, tab_number: '1028', name: 'Морозов Денис Игоревич' },
-  { id: 9, tab_number: '1029', name: 'Новиков Роман Александрович' },
-  { id: 10, tab_number: '1030', name: 'Федоров Павел Сергеевич' }
-];
-
+export const INITIAL_DRIVERS: Driver[] = [];
 export const INITIAL_DISPATCHERS: Dispatcher[] = [
   { id: 1, tab_number: 'D-01', name: 'Петров Иван Иванович' },
   { id: 2, tab_number: 'D-02', name: 'Сидоров Петр Сергеевич' },
   { id: 3, tab_number: 'D-03', name: 'Ковалева Анна Андреевна' }
 ];
-
-export const INITIAL_VEHICLES: Vehicle[] = [
-  { id: 1, vehicle_number: 'А012АА178', model: 'ЛиАЗ-5292', bus_class: 'большой' },
-  { id: 2, vehicle_number: 'В123ВВ178', model: 'МАЗ-203', bus_class: 'большой' },
-  { id: 3, vehicle_number: 'С234СС178', model: 'Волгабас-5270', bus_class: 'большой' },
-  { id: 4, vehicle_number: 'Е345ЕЕ178', model: 'ЛиАЗ-6213', bus_class: 'особо большой' },
-  { id: 5, vehicle_number: 'К456КК178', model: 'ПАЗ-3204', bus_class: 'средний' },
-  { id: 6, vehicle_number: 'М567ММ178', model: 'МАЗ-206', bus_class: 'средний' },
-  { id: 7, vehicle_number: 'Н678НН178', model: 'ЛиАЗ-5292', bus_class: 'большой' },
-  { id: 8, vehicle_number: 'О789ОО178', model: 'МАЗ-203', bus_class: 'большой' },
-  { id: 9, vehicle_number: 'Р890РР178', model: 'Волгабас-6271', bus_class: 'особо большой' }
-];
+export const INITIAL_VEHICLES: Vehicle[] = [];
 
 export const INITIAL_INCIDENTS: Incident[] = [];

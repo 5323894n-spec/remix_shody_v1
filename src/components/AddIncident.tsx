@@ -7,6 +7,7 @@ interface AddIncidentProps {
   breakdowns: Breakdown[];
   drivers: Driver[];
   vehicles: Vehicle[];
+  incidents: Incident[];
   currentUser: User;
   onAddIncident: (incident: Omit<Incident, 'id'>) => void;
 }
@@ -14,8 +15,42 @@ interface AddIncidentProps {
 const WEEKDAYS = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
 
 export default function AddIncident({ 
-  breakdowns, drivers, vehicles, currentUser, onAddIncident 
+  breakdowns, drivers, vehicles, incidents, currentUser, onAddIncident 
 }: AddIncidentProps) {
+  // Extract unique route numbers from incidents
+  const uniqueRoutes = useMemo(() => {
+    const routes = new Set<string>();
+    incidents.forEach(inc => {
+      if (inc.route_number && inc.route_number.trim() !== '') {
+        routes.add(inc.route_number.trim());
+      }
+    });
+    return Array.from(routes).sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
+  }, [incidents]);
+
+  const uniqueVehicles = useMemo(() => {
+    const vSet = new Set<string>();
+    vehicles.forEach(v => vSet.add(v.vehicle_number));
+    incidents.forEach(inc => {
+      if (inc.vehicle_number && inc.vehicle_number.trim() !== '') {
+        vSet.add(inc.vehicle_number.trim());
+      }
+    });
+    return Array.from(vSet).sort();
+  }, [vehicles, incidents]);
+
+  const uniqueDrivers = useMemo(() => {
+    const dMap = new Map<string, string>();
+    drivers.forEach(d => dMap.set(d.tab_number, d.name));
+    incidents.forEach(inc => {
+      if (inc.driver_tab_number && inc.driver_tab_number.trim() !== '') {
+        if (!dMap.has(inc.driver_tab_number)) {
+          dMap.set(inc.driver_tab_number, inc.driver_name || '');
+        }
+      }
+    });
+    return Array.from(dMap.entries()).map(([tab, name]) => ({ tab_number: tab, name }));
+  }, [drivers, incidents]);
   // Form states
   const [incidentDate, setIncidentDate] = useState(new Date().toISOString().split('T')[0]);
   const [columnNumber, setColumnNumber] = useState('Колонна №1');
@@ -62,7 +97,7 @@ export default function AddIncident({
   // Driver autofill on tab number change
   const handleTabNumberChange = (val: string) => {
     setDriverTabNumber(val);
-    const drv = drivers.find(d => d.tab_number === val);
+    const drv = uniqueDrivers.find(d => d.tab_number === val);
     if (drv) {
       setDriverName(drv.name);
     }
@@ -165,9 +200,9 @@ export default function AddIncident({
                 onChange={e => setColumnNumber(e.target.value)}
                 className="w-full px-3 py-1.5 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
-                <option value="Колонна №1">Колонна №1 (Автобусы ОБВ)</option>
-                <option value="Колонна №2">Колонна №2 (Автобусы БВ)</option>
-                <option value="Колонна №3">Колонна №3 (Автобусы СВ и МВ)</option>
+                <option value="Колонна №1">Колонна №1</option>
+                <option value="Колонна №2">Колонна №2</option>
+                <option value="Колонна №3">Колонна №3</option>
               </select>
             </div>
 
@@ -176,11 +211,17 @@ export default function AddIncident({
               <input 
                 type="text" 
                 required
+                list="route-suggestions"
                 placeholder="Например, 2, 24, 130"
                 value={routeNumber}
                 onChange={e => setRouteNumber(e.target.value)}
                 className="w-full px-3 py-1.5 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
+              <datalist id="route-suggestions">
+                {uniqueRoutes.map((route, idx) => (
+                  <option key={idx} value={route} />
+                ))}
+              </datalist>
             </div>
 
             <div className="space-y-1">
@@ -199,14 +240,14 @@ export default function AddIncident({
               <input 
                 type="text" 
                 required
-                placeholder="А012АА178"
+                placeholder="А012АА"
                 value={vehicleNumber}
                 onChange={e => setVehicleNumber(e.target.value)}
                 list="vehicles-list"
                 className="w-full px-3 py-1.5 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 uppercase"
               />
               <datalist id="vehicles-list">
-                {vehicles.map(v => <option key={v.id} value={v.vehicle_number} />)}
+                {uniqueVehicles.map((v, idx) => <option key={idx} value={v} />)}
               </datalist>
             </div>
           </div>
@@ -227,7 +268,7 @@ export default function AddIncident({
                 className="w-full px-3 py-1.5 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
               <datalist id="drivers-tab-list">
-                {drivers.map(d => <option key={d.id} value={d.tab_number} />)}
+                {uniqueDrivers.map((d, idx) => <option key={idx} value={d.tab_number} />)}
               </datalist>
             </div>
 
@@ -261,8 +302,7 @@ export default function AddIncident({
             <div className="space-y-1">
               <label className="text-xs font-semibold text-slate-500">Время выезда</label>
               <input 
-                type="text" 
-                placeholder="05:40"
+                type="time" 
                 value={departureTime}
                 onChange={e => setDepartureTime(e.target.value)}
                 className="w-full px-3 py-1.5 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -272,8 +312,7 @@ export default function AddIncident({
             <div className="space-y-1">
               <label className="text-xs font-semibold text-slate-500">Время сообщения</label>
               <input 
-                type="text" 
-                placeholder="08:15"
+                type="time" 
                 value={incidentReportTime}
                 onChange={e => setIncidentReportTime(e.target.value)}
                 className="w-full px-3 py-1.5 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -283,8 +322,7 @@ export default function AddIncident({
             <div className="space-y-1">
               <label className="text-xs font-semibold text-slate-500">Заезд в парк</label>
               <input 
-                type="text" 
-                placeholder="09:20"
+                type="time" 
                 value={returnToDepotTime}
                 onChange={e => setReturnToDepotTime(e.target.value)}
                 className="w-full px-3 py-1.5 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -294,8 +332,7 @@ export default function AddIncident({
             <div className="space-y-1">
               <label className="text-xs font-semibold text-slate-500">Повторный выход</label>
               <input 
-                type="text" 
-                placeholder="12:00"
+                type="time" 
                 value={restartTime}
                 onChange={e => setRestartTime(e.target.value)}
                 className="w-full px-3 py-1.5 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"

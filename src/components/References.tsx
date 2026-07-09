@@ -212,8 +212,8 @@ export default function References({
     } else {
       const demoVehicles: Vehicle[] = [
         ...localVehicles,
-        { id: 100, vehicle_number: 'Х555ХХ178', model: 'Волгабас-6271', bus_class: 'особо большой' },
-        { id: 101, vehicle_number: 'У666УУ178', model: 'ПАЗ-3204', bus_class: 'средний' }
+        { id: 100, vehicle_number: 'Х555ХХ', model: 'Волгабас-6271', bus_class: 'особо большой' },
+        { id: 101, vehicle_number: 'У666УУ', model: 'ПАЗ-3204', bus_class: 'средний' }
       ];
       setLocalVehicles(demoVehicles);
       alert('Успешно импортировано 2 ТС в справочник транспорта.');
@@ -477,7 +477,7 @@ export default function References({
                         <input
                           type="text"
                           disabled={!hasWriteAccess}
-                          placeholder="Пример: А012АА178"
+                          placeholder="Пример: А012АА"
                           value={v.vehicle_number}
                           onChange={e => updateVehicleField(index, 'vehicle_number', e.target.value.toUpperCase())}
                           className={`px-2 py-1 text-sm rounded border ${hasWriteAccess ? 'border-slate-200 bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500' : 'border-transparent bg-transparent cursor-default'} w-full font-mono uppercase font-bold`}

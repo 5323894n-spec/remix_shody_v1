@@ -412,7 +412,7 @@ export default function Journal({
             >
               <option value="Все">Все колонны</option>
               {filterOptions.columns.map(c => (
-                <option key={c} value={c}>Колонна {c}</option>
+                <option key={c} value={c}>{c}</option>
               ))}
             </select>
           </div>
@@ -700,7 +700,7 @@ export default function Journal({
                                     </div>
                                     <div className="flex justify-between border-b border-slate-200 pb-1.5">
                                       <span className="text-slate-400">Автоколонна:</span>
-                                      <span className="text-slate-800 font-bold">Колонна {i.column_number || 'Не указана'}</span>
+                                      <span className="text-slate-800 font-bold">{i.column_number || 'Не указана'}</span>
                                     </div>
                                     <div className="flex justify-between border-b border-slate-200 pb-1.5">
                                       <span className="text-slate-400">Выпуск ТС:</span>
@@ -815,7 +815,7 @@ export default function Journal({
                                         <div>
                                           <label className="text-[9px] font-black text-slate-400 uppercase">Выезд (план)</label>
                                           <input
-                                            type="text"
+                                            type="time"
                                             placeholder="--:--"
                                             value={editForm.departure_time || ''}
                                             onChange={e => handleEditChange('departure_time', e.target.value)}
@@ -825,7 +825,7 @@ export default function Journal({
                                         <div>
                                           <label className="text-[9px] font-black text-red-500 uppercase">Время схода</label>
                                           <input
-                                            type="text"
+                                            type="time"
                                             placeholder="--:--"
                                             value={editForm.incident_report_time || ''}
                                             onChange={e => handleEditChange('incident_report_time', e.target.value)}
@@ -835,7 +835,7 @@ export default function Journal({
                                         <div>
                                           <label className="text-[9px] font-black text-slate-400 uppercase">Заезд в парк</label>
                                           <input
-                                            type="text"
+                                            type="time"
                                             placeholder="--:--"
                                             value={editForm.return_to_depot_time || ''}
                                             onChange={e => handleEditChange('return_to_depot_time', e.target.value)}
@@ -845,7 +845,7 @@ export default function Journal({
                                         <div>
                                           <label className="text-[9px] font-black text-emerald-600 uppercase">Выпуск на линию</label>
                                           <input
-                                            type="text"
+                                            type="time"
                                             placeholder="--:--"
                                             value={editForm.restart_time || ''}
                                             onChange={e => handleEditChange('restart_time', e.target.value)}

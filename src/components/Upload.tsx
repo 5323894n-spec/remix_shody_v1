@@ -332,7 +332,7 @@ export default function Upload({ breakdowns, drivers, vehicles, currentUser, onB
     setTimeout(() => {
       const processed = rawRows.map(r => {
         const drv = drivers.find(d => d.tab_number === r.driverTab);
-        const driverName = drv ? drv.name : 'Не указан';
+        const driverName = r.driverName ? r.driverName : (drv ? drv.name : 'Не указан');
         const { breakdown, confidence } = classifyReason(r.reason);
         return {
           ...r,
@@ -353,18 +353,18 @@ export default function Upload({ breakdowns, drivers, vehicles, currentUser, onB
     {
       name: 'сходы_дневная_смена_06_07.xlsx',
       rows: [
-        { date: '2026-07-06', column: 'Колонна №1', route: '2', run: '3', vehicle: 'А012АА178', driverTab: '1021', departure: '05:40', report: '08:15', returnDepot: '09:10', restart: '12:00', reason: 'сильно кипит мотор в пробке парит антифриз наружу' },
-        { date: '2026-07-06', column: 'Колонна №2', route: '24', run: '5', vehicle: 'В123ВВ178', driverTab: '1023', departure: '06:15', report: '09:40', returnDepot: '10:30', restart: '', reason: 'водитель смирнов почувствовал острую боль в груди высокое давление 170/110' },
-        { date: '2026-07-06', column: 'Колонна №1', route: '130', run: '1', vehicle: 'С234СС178', driverTab: '1022', departure: '05:20', report: '14:50', returnDepot: '15:40', restart: '', reason: 'прокол заднего левого колеса на трамвайных путях' },
-        { date: '2026-07-06', column: 'Колонна №3', route: '200', run: '9', vehicle: 'К456КК178', driverTab: '1025', departure: '06:45', report: '10:12', returnDepot: '', restart: '11:00', reason: 'неисправность электрики фар не горит ближний свет' }
+        { date: '2026-07-06', column: 'Колонна №1', route: '2', run: '3', vehicle: 'А012АА', driverTab: '1021', driverName: 'Смирнов А.В.', departure: '05:40', report: '08:15', returnDepot: '09:10', restart: '12:00', reason: 'сильно кипит мотор в пробке парит антифриз наружу' },
+        { date: '2026-07-06', column: 'Колонна №2', route: '24', run: '5', vehicle: 'В123ВВ', driverTab: '1023', driverName: 'Васильев С.П.', departure: '06:15', report: '09:40', returnDepot: '10:30', restart: '', reason: 'водитель смирнов почувствовал острую боль в груди высокое давление 170/110' },
+        { date: '2026-07-06', column: 'Колонна №1', route: '130', run: '1', vehicle: 'С234СС', driverTab: '1022', driverName: 'Кузнецов Д.С.', departure: '05:20', report: '14:50', returnDepot: '15:40', restart: '', reason: 'прокол заднего левого колеса на трамвайных путях' },
+        { date: '2026-07-06', column: 'Колонна №3', route: '200', run: '9', vehicle: 'К456КК', driverTab: '1025', driverName: 'Соколов М.Ю.', departure: '06:45', report: '10:12', returnDepot: '', restart: '11:00', reason: 'неисправность электрики фар не горит ближний свет' }
       ]
     },
     {
       name: 'рапорты_сходов_07_07.csv',
       rows: [
-        { date: '2026-07-07', column: 'Колонна №1', route: '130', run: '2', vehicle: 'Е345ЕЕ178', driverTab: '1024', departure: '06:00', report: '07:45', returnDepot: '08:40', restart: '', reason: 'притер легковую audi на повороте дтп ждем дпс' },
-        { date: '2026-07-07', column: 'Колонна №3', route: '300', run: '4', vehicle: 'М567ММ178', driverTab: '1026', departure: '06:30', report: '12:15', returnDepot: '13:00', restart: '14:50', reason: 'заклинило заднюю пассажирскую дверь не закрывается' },
-        { date: '2026-07-07', column: 'Колонна №1', route: '2', run: '5', vehicle: 'А012АА178', driverTab: '1021', departure: '05:40', report: '16:10', returnDepot: '17:00', restart: '', reason: 'уходит воздух из пневмосистемы упала задняя часть кузова' }
+        { date: '2026-07-07', column: 'Колонна №1', route: '130', run: '2', vehicle: 'Е345ЕЕ', driverTab: '1024', driverName: 'Попов А.Н.', departure: '06:00', report: '07:45', returnDepot: '08:40', restart: '', reason: 'притер легковую audi на повороте дтп ждем дпс' },
+        { date: '2026-07-07', column: 'Колонна №3', route: '300', run: '4', vehicle: 'М567ММ', driverTab: '1026', driverName: 'Лебедев А.Д.', departure: '06:30', report: '12:15', returnDepot: '13:00', restart: '14:50', reason: 'заклинило заднюю пассажирскую дверь не закрывается' },
+        { date: '2026-07-07', column: 'Колонна №1', route: '2', run: '5', vehicle: 'А012АА', driverTab: '1021', driverName: 'Смирнов А.В.', departure: '05:40', report: '16:10', returnDepot: '17:00', restart: '', reason: 'уходит воздух из пневмосистемы упала задняя часть кузова' }
       ]
     }
   ];
