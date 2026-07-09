@@ -41,14 +41,6 @@ export default function Login({ systemUsers, onLoginSuccess, theme }: LoginProps
     onLoginSuccess(foundUser);
   };
 
-  const handleQuickLogin = (user: User) => {
-    setUsername(user.username);
-    setPassword(user.password || '');
-    setError(null);
-    // Auto-login on quick click for superior UX
-    onLoginSuccess(user);
-  };
-
   const getRoleBadge = (role: UserRole) => {
     switch (role) {
       case 'admin':
@@ -149,43 +141,6 @@ export default function Login({ systemUsers, onLoginSuccess, theme }: LoginProps
             <span>Авторизоваться в системе</span>
           </button>
         </form>
-
-        {/* Separator */}
-        <div className="relative flex items-center justify-center">
-          <div className="border-t border-slate-800 w-full"></div>
-          <span className="absolute bg-slate-900 px-3 text-[10px] font-extrabold text-slate-500 uppercase tracking-widest">
-            Быстрый вход для тестов
-          </span>
-        </div>
-
-        {/* Quick login cards */}
-        <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
-          {systemUsers.map(u => {
-            const badge = getRoleBadge(u.role);
-            return (
-              <button
-                key={u.id}
-                type="button"
-                onClick={() => handleQuickLogin(u)}
-                className="w-full text-left bg-slate-950/40 hover:bg-slate-950 border border-slate-800 hover:border-slate-700 p-2.5 rounded-lg transition-all flex items-center justify-between gap-3 group cursor-pointer"
-              >
-                <div className="space-y-0.5">
-                  <div className="text-xs font-bold text-slate-200 group-hover:text-white transition-colors">
-                    {u.name}
-                  </div>
-                  <div className="text-[10px] text-slate-500 font-mono">
-                    логин: <span className="text-slate-400 font-bold">{u.username}</span> | пароль: <span className="text-slate-400 font-bold">{u.password}</span>
-                  </div>
-                </div>
-                <div className="flex flex-col items-end gap-1 shrink-0">
-                  <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-black uppercase tracking-wider ${badge.style}`}>
-                    {badge.label}
-                  </span>
-                </div>
-              </button>
-            );
-          })}
-        </div>
 
         {/* Footer info */}
         <div className="text-center text-[10px] text-slate-500 font-bold uppercase tracking-wider border-t border-slate-800/60 pt-4 flex items-center justify-center gap-1.5">
