@@ -146,7 +146,7 @@ export default function Dashboard({ incidents, breakdowns, theme = 'light' }: Da
     });
     return Object.entries(routes)
       .map(([route, count]) => ({ 'Маршрут': `№ ${route}`, 'Сходы': count }))
-      .sort((a, b) => b['Сходы'] - a['Сходы']).slice(0, 5);
+      .sort((a, b) => b['Сходы'] - a['Сходы']).slice(0, 10);
   }, [filteredIncidents]);
 
   const topVehiclesChartData = useMemo(() => {
@@ -156,7 +156,17 @@ export default function Dashboard({ incidents, breakdowns, theme = 'light' }: Da
     });
     return Object.entries(vehicles)
       .map(([vehicle, count]) => ({ 'Госномер': vehicle, 'Сходы': count }))
-      .sort((a, b) => b['Сходы'] - a['Сходы']).slice(0, 5);
+      .sort((a, b) => b['Сходы'] - a['Сходы']).slice(0, 10);
+  }, [filteredIncidents]);
+
+  const topDriversChartData = useMemo(() => {
+    const drivers: Record<string, number> = {};
+    filteredIncidents.forEach(i => {
+      if (i.driver_name) drivers[i.driver_name] = (drivers[i.driver_name] || 0) + 1;
+    });
+    return Object.entries(drivers)
+      .map(([driver, count]) => ({ 'Водитель': driver, 'Сходы': count }))
+      .sort((a, b) => b['Сходы'] - a['Сходы']).slice(0, 10);
   }, [filteredIncidents]);
 
   return (
@@ -312,10 +322,10 @@ export default function Dashboard({ incidents, breakdowns, theme = 'light' }: Da
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-base font-bold text-slate-800 flex items-center gap-2"><Route className="w-4 h-4 text-blue-500"/> ТОП-5 маршрутов</h3>
+            <h3 className="text-base font-bold text-slate-800 flex items-center gap-2"><Route className="w-4 h-4 text-blue-500"/> ТОП-10 маршрутов</h3>
           </div>
           <div className="space-y-4">
             {topRoutesChartData.map((item, idx) => (
@@ -335,7 +345,7 @@ export default function Dashboard({ incidents, breakdowns, theme = 'light' }: Da
 
         <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-base font-bold text-slate-800 flex items-center gap-2"><Bus className="w-4 h-4 text-rose-500"/> ТОП-5 автобусов</h3>
+            <h3 className="text-base font-bold text-slate-800 flex items-center gap-2"><Bus className="w-4 h-4 text-rose-500"/> ТОП-10 автобусов</h3>
           </div>
           <div className="space-y-4">
             {topVehiclesChartData.map((item, idx) => (
@@ -350,6 +360,26 @@ export default function Dashboard({ incidents, breakdowns, theme = 'light' }: Da
               </div>
             ))}
             {topVehiclesChartData.length === 0 && <div className="text-center text-slate-400 text-sm py-4 font-medium">Нет данных</div>}
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-base font-bold text-slate-800 flex items-center gap-2"><Users className="w-4 h-4 text-amber-500"/> ТОП-10 водителей</h3>
+          </div>
+          <div className="space-y-4">
+            {topDriversChartData.map((item, idx) => (
+              <div key={idx} className="flex items-center justify-between">
+                <span className="text-sm font-semibold text-slate-700 truncate max-w-[120px]">{item['Водитель']}</span>
+                <div className="flex-1 mx-4">
+                  <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-amber-500 rounded-full" style={{ width: `${(item['Сходы'] / Math.max(...topDriversChartData.map(i => i['Сходы']))) * 100}%` }}></div>
+                  </div>
+                </div>
+                <span className="text-sm font-bold text-slate-900 w-8 text-right">{item['Сходы']}</span>
+              </div>
+            ))}
+            {topDriversChartData.length === 0 && <div className="text-center text-slate-400 text-sm py-4 font-medium">Нет данных</div>}
           </div>
         </div>
       </div>

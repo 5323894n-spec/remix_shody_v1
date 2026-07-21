@@ -103,6 +103,14 @@ export default function AddIncident({
     }
   };
 
+  const handleDriverNameChange = (val: string) => {
+    setDriverName(val);
+    const drv = uniqueDrivers.find(d => d.name === val);
+    if (drv) {
+      setDriverTabNumber(drv.tab_number);
+    }
+  };
+
   // Submit handler
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -276,11 +284,15 @@ export default function AddIncident({
               <label className="text-xs font-semibold text-slate-500">Ф.И.О. водителя</label>
               <input 
                 type="text" 
-                placeholder="Ф.И.О. подгружается по табельному"
+                placeholder="Начните вводить Ф.И.О. или подгрузится по табельному"
                 value={driverName}
-                onChange={e => setDriverName(e.target.value)}
+                onChange={e => handleDriverNameChange(e.target.value)}
+                list="drivers-name-list"
                 className="w-full px-3 py-1.5 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
+              <datalist id="drivers-name-list">
+                {uniqueDrivers.map((d, idx) => d.name ? <option key={idx} value={d.name} /> : null)}
+              </datalist>
             </div>
 
             <div className="space-y-1">
